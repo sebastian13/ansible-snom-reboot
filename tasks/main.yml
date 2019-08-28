@@ -1,0 +1,38 @@
+---
+
+# For Snom D* phones
+- name: Reboot D-phones
+  uri:
+    url: http://{{ ansible_host }}/advanced_update.htm?reboot=Reboot
+    url_username: admin
+    url_password: "{{ ansible_password }}"
+    force_basic_auth: yes
+  when: series == "d"
+  register: reboot
+  failed_when:
+    - not reboot.url | regex_search(".*reboot\.htm$")
+
+# For Snom M* phones
+- name: Reboot the DECT base
+  uri:
+    url: http://{{ ansible_host }}/reboot.html
+    url_username: admin
+    url_password: "{{ ansible_password }}"
+  register: reboot
+  when: series == "m"
+  failed_when:
+    - not reboot.url | regex_search(".*rebootwait\.html$")
+
+#- debug: msg="{{ reboot }}"
+#  when: reboot is defined
+
+- pause:
+    seconds: 30
+- name: Wait for reboot
+  uri:
+    url: http://{{ ansible_host }}
+    status_code: [200,401]
+  register: result
+  until: result.failed == false
+  retries: 12
+  delay: 10
