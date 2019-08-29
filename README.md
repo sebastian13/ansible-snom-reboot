@@ -17,7 +17,7 @@ This playbook reboots snom phones of the D-Series and M-Series.
 	---
 	- hosts: "{{ hostname | default('snom_mseries') }}"
 	  roles:
-	    - snom
+	    - snom-reboot
 	  gather_facts: no
 	  connection: local
 	  vars:
@@ -25,7 +25,7 @@ This playbook reboots snom phones of the D-Series and M-Series.
 	
 	- hosts: "{{ hostname | default('snom_dseries') }}"
 	  roles:
-	    - snom
+	    - snom-reboot
 	  gather_facts: no
 	  connection: local
 	  vars:
@@ -36,14 +36,14 @@ This playbook reboots snom phones of the D-Series and M-Series.
 
 	```
 	[snom_dseries]
-	phone01              ansible_host=10.11.0.5 ansible_password=password
+	phone_01           ansible_host=10.11.0.5 ansible_password=password
 	
 	[snom_mseries:vars]
 	ansible_password=password
 	
 	[snom_mseries]
-	"DECT Base 01"       ansible_host=10.11.1.5
-	"DECT Base 02"       ansible_host=10.11.2.5
+	dect_base_01       ansible_host=10.11.1.5
+	dect_base_02       ansible_host=10.11.2.5
 	```
 	
 	Ansible recommends to not store passwords in plain text, see [Variables and Vaults](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#best-practices-for-variables-and-vaults)
@@ -51,7 +51,7 @@ This playbook reboots snom phones of the D-Series and M-Series.
 1. Run the playbook. Optionally limit the deployment to a single device or group.
 
 	```
-	ansible-playbook snom-reboot.yml --limit phone01
+	ansible-playbook snom-reboot.yml --limit phone_01
 	ansible-playbook snom-reboot.yml --limit snom_dseries
 	```
 	
