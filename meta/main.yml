@@ -1,0 +1,11 @@
+---
+
+galaxy_info:
+  role_name: "snom-reboot"
+  author: "Sebastian Plocek"
+  description: "Reboots snom phones of D- & M-Series."
+  company: "PG IT Consulting eG"
+  min_ansible_version: 2.1
+
+  galaxy_tags:
+    - "snom"
